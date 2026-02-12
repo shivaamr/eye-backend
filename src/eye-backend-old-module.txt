@@ -6,27 +6,22 @@ import { ImagesModule } from './images/images.module';
 import { Visit } from './visits/visit.entity';
 import { VisitImage } from './visits/visit-image.entity';
 import { VisitModule } from './visits/visit.module';
-import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
-
     TypeOrmModule.forRoot({
       type: 'postgres',
-      url: process.env.DATABASE_URL,
+      host: 'localhost',
+      port: 5432,
+      username: 'postgres',
+      password: 'postgres',
+      database: 'eye_clinic',
       autoLoadEntities: true,
       synchronize: true,
-	  ssl: { rejectUnauthorized: false },
     }),
-
     PatientModule,
-    VisitModule,
+	    VisitModule, 
     ImagesModule,
   ],
 })
 export class AppModule {}
-
-
 
