@@ -24,6 +24,7 @@ async function bootstrap() {
 
   app.enableCors(); // Angular access
   app.useGlobalPipes(new ValidationPipe());
+  app.setGlobalPrefix('api');
 
   // 🔑 Serve uploaded images
   app.useStaticAssets(join(__dirname, '..', 'uploads'), {

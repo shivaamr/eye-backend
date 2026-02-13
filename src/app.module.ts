@@ -1,15 +1,24 @@
-//check
+
+
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Patient } from './patient/patient.entity';
+import { ConfigModule } from '@nestjs/config';
+import { ServeStaticModule } from '@nestjs/serve-static'; // 1. Import this
+import { join } from 'path'; // 2. Import this
+
 import { PatientModule } from './patient/patient.module';
 import { ImagesModule } from './images/images.module';
-import { Visit } from './visits/visit.entity';
-import { VisitImage } from './visits/visit-image.entity';
 import { VisitModule } from './visits/visit.module';
-import { ConfigModule } from '@nestjs/config';
+
 @Module({
   imports: [
+    // 3. Add this configuration
+ServeStaticModule.forRoot({
+  rootPath: join(__dirname, '..', 'public', 'browser'),
+  exclude: ['/api/(.*)'],
+}),
+
+
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -19,7 +28,7 @@ import { ConfigModule } from '@nestjs/config';
       url: process.env.DATABASE_URL,
       autoLoadEntities: true,
       synchronize: true,
-	  ssl: { rejectUnauthorized: false },
+      ssl: { rejectUnauthorized: false },
     }),
 
     PatientModule,
@@ -28,6 +37,3 @@ import { ConfigModule } from '@nestjs/config';
   ],
 })
 export class AppModule {}
-
-
-
